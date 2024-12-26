@@ -42,29 +42,37 @@ document.addEventListener('DOMContentLoaded', function() {
                 body: JSON.stringify({ prompt }),
             });
 
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error || 'An error occurred');
+            }
+
             const data = await response.json();
 
-            if (response.ok) {
-                claudeOutput.textContent = data.claude_response;
-                claudeOutput.removeAttribute('data-state');
-                gpt4Output.textContent = data.gpt4_response;
-                gpt4Output.removeAttribute('data-state');
+            // Add logging to debug response data
+            console.log('API Response:', data);
 
-                // Show like overlays after content is loaded
-                document.querySelectorAll('.like-overlay').forEach(overlay => {
-                    overlay.style.display = 'block'; // Show overlays
-                });
+            // Clear loading state before setting content
+            claudeOutput.removeAttribute('data-state');
+            gpt4Output.removeAttribute('data-state');
 
-                // Generate and display share link with shorter parameters
-                const shareUrl = new URL(window.location.href);
-                shareUrl.searchParams.set('p', prompt);
-                shareUrl.searchParams.set('c', btoa(data.claude_response));
-                shareUrl.searchParams.set('g', btoa(data.gpt4_response));
-                shareLink.value = shareUrl.toString();
-                shareSection.classList.remove('d-none');
-            } else {
-                throw new Error(data.error || 'An error occurred');
-            }
+            // Set the output content
+            claudeOutput.textContent = data.claude_response || 'No response from Claude';
+            gpt4Output.textContent = data.gpt4_response || 'No response from GPT-4';
+
+            // Show like overlays after content is loaded
+            document.querySelectorAll('.like-overlay').forEach(overlay => {
+                overlay.style.display = 'block';
+            });
+
+            // Generate and display share link
+            const shareUrl = new URL(window.location.href);
+            shareUrl.searchParams.set('p', prompt);
+            shareUrl.searchParams.set('c', btoa(data.claude_response || ''));
+            shareUrl.searchParams.set('g', btoa(data.gpt4_response || ''));
+            shareLink.value = shareUrl.toString();
+            shareSection.classList.remove('d-none');
+
         } catch (error) {
             console.error('Error:', error);
             showError(error.message);
