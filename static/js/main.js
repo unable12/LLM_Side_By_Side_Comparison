@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Handle copy buttons (modified to only use bottom buttons)
+    // Handle copy buttons
     document.querySelectorAll('.bottom-copy-btn').forEach(button => {
         button.addEventListener('click', function() {
             const targetId = this.dataset.target;
@@ -92,14 +92,16 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Renamed button text and updated functionality
-    copyShareLink.textContent = "Share These Results";
+    // Handle share link copying
     copyShareLink.addEventListener('click', function() {
         const textToCopy = shareLink.value;
 
         if (navigator.clipboard && window.isSecureContext) {
             navigator.clipboard.writeText(textToCopy).then(() => {
-                showCopySuccess();
+                copyShareLink.classList.add('copy-success');
+                setTimeout(() => {
+                    copyShareLink.classList.remove('copy-success');
+                }, 1500);
             }).catch(err => {
                 console.error('Failed to copy share link:', err);
                 fallbackCopyText(textToCopy);
@@ -109,8 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-
-    // Remove mouse move handler and simplify like overlay behavior
+    // Handle like overlays
     document.querySelectorAll('.like-overlay').forEach(overlay => {
         overlay.addEventListener('click', function(e) {
             const outputArea = this.closest('.card-body').querySelector('.output-area');
@@ -191,24 +192,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         try {
             document.execCommand('copy');
-            showCopySuccess();
+            copyShareLink.classList.add('copy-success');
+            setTimeout(() => {
+                copyShareLink.classList.remove('copy-success');
+            }, 1500);
         } catch (err) {
             console.error('Failed to copy text:', err);
             alert('Failed to copy link to clipboard');
         }
 
         document.body.removeChild(textArea);
-    }
-
-    function showCopySuccess() {
-        const icon = copyShareLink.querySelector('i');
-        icon.classList.remove('fa-share');
-        icon.classList.add('fa-check');
-        copyShareLink.classList.add('copy-success');
-        setTimeout(() => {
-            icon.classList.remove('fa-check');
-            icon.classList.add('fa-share');
-            copyShareLink.classList.remove('copy-success');
-        }, 1500);
     }
 });
