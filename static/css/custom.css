@@ -140,6 +140,11 @@
     transition: opacity 0.2s ease;
 }
 
+.bottom-copy-btn img {
+    width: 16px;
+    height: 16px;
+}
+
 .card:hover .bottom-copy-btn {
     opacity: 1;
 }

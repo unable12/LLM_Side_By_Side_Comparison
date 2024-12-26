@@ -65,17 +65,13 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
             const targetId = this.dataset.target;
             const textToCopy = document.getElementById(targetId).textContent;
-            const icon = this.querySelector('i');
+            const icon = this.querySelector('img'); //Corrected this line
 
             navigator.clipboard.writeText(textToCopy).then(() => {
                 // Visual feedback for copy
                 button.classList.add('copy-success');
-                icon.classList.remove('fa-copy');
-                icon.classList.add('fa-check');
                 setTimeout(() => {
                     button.classList.remove('copy-success');
-                    icon.classList.remove('fa-check');
-                    icon.classList.add('fa-copy');
                 }, 1500);
             }).catch(err => {
                 console.error('Failed to copy text:', err);
@@ -104,8 +100,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Handle like overlays
     document.querySelectorAll('.like-overlay').forEach(overlay => {
-        overlay.addEventListener('click', function() {
-            if (!this.classList.contains('liked')) {
+        overlay.addEventListener('click', function(e) {
+            const outputArea = this.closest('.card-body').querySelector('.output-area');
+            const content = outputArea.textContent.trim();
+
+            // Only allow liking if there's content and it's not "Loading..."
+            if (content && content !== 'Loading...' && !this.classList.contains('liked')) {
                 // Remove liked class from other overlay
                 document.querySelectorAll('.like-overlay').forEach(other => {
                     if (other !== this) {
@@ -113,6 +113,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
                 this.classList.add('liked');
+            } else {
+                // Prevent the hover effect from showing on empty/loading state
+                e.preventDefault();
             }
         });
     });

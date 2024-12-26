@@ -49,7 +49,7 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Claude 3.5 Sonnet</h5>
                         <button class="btn btn-sm btn-outline-secondary copy-btn" data-target="claudeOutput">
-                            <i class="fas fa-copy"></i>
+                            <img src="{{ url_for('static', filename='img/copy.png') }}" alt="Copy">
                         </button>
                     </div>
                     <div class="card-body">
@@ -57,7 +57,7 @@
                             <!-- Claude output will be inserted here -->
                         </div>
                         <button class="btn btn-sm btn-outline-secondary bottom-copy-btn" data-target="claudeOutput">
-                            <i class="fas fa-copy"></i>
+                            <img src="{{ url_for('static', filename='img/copy.png') }}" alt="Copy">
                         </button>
                         <div class="like-overlay" data-model="claude">
                             <span class="like-text">I like this answer better</span>
@@ -71,7 +71,7 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">GPT-4o</h5>
                         <button class="btn btn-sm btn-outline-secondary copy-btn" data-target="gpt4Output">
-                            <i class="fas fa-copy"></i>
+                            <img src="{{ url_for('static', filename='img/copy.png') }}" alt="Copy">
                         </button>
                     </div>
                     <div class="card-body">
@@ -79,7 +79,7 @@
                             <!-- GPT-4 output will be inserted here -->
                         </div>
                         <button class="btn btn-sm btn-outline-secondary bottom-copy-btn" data-target="gpt4Output">
-                            <i class="fas fa-copy"></i>
+                            <img src="{{ url_for('static', filename='img/copy.png') }}" alt="Copy">
                         </button>
                         <div class="like-overlay" data-model="gpt4">
                             <span class="like-text">I like this answer better</span>
