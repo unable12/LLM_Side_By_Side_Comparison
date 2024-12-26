@@ -57,6 +57,11 @@
     display: block;
 }
 
+.output-area:not(:empty):not([data-state="loading"]) ~ .like-overlay:hover {
+    background: rgba(40, 167, 69, 0.1);
+    backdrop-filter: blur(4px);
+}
+
 .output-area:not(:empty):not([data-state="loading"]) ~ .like-overlay:hover .like-text {
     opacity: 1;
 }
