@@ -76,12 +76,13 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(var(--bs-success-rgb), 0.1);
+    background: transparent;
     display: none;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
 }
 
 .card:hover .like-overlay {
@@ -89,8 +90,12 @@
 }
 
 .liked {
-    background: rgba(var(--bs-success-rgb), 0.2);
+    border-color: var(--bs-success);
     display: flex !important;
+}
+
+.liked .like-text {
+    display: none;
 }
 
 .like-text {
@@ -100,15 +105,10 @@
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
-/* Button enhancement */
-.btn-secondary {
-    position: relative;
-    overflow: hidden;
-    transition: all 0.2s ease-in-out;
-}
-
-.btn-secondary:hover {
-    transform: translateY(-1px);
+/* Hide like overlay when there's no content */
+.output-area:empty ~ .like-overlay,
+.output-area:contains("Loading...") ~ .like-overlay {
+    display: none !important;
 }
 
 /* Sparkle animation for copy button */
