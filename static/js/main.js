@@ -95,21 +95,39 @@ document.addEventListener('DOMContentLoaded', function() {
     // Renamed button text and updated functionality
     copyShareLink.textContent = "Share These Results";
     copyShareLink.addEventListener('click', function() {
-        navigator.clipboard.writeText(shareLink.value).then(() => {
-            const icon = this.querySelector('i');
-            icon.classList.remove('fa-share');
-            icon.classList.add('fa-check');
-            this.classList.add('copy-success');
-            setTimeout(() => {
-                icon.classList.remove('fa-check');
-                icon.classList.add('fa-share');
-                this.classList.remove('copy-success');
-            }, 1500);
-        }).catch(err => {
-            console.error('Failed to copy share link:', err);
-            alert('Failed to copy share link');
+        const textToCopy = shareLink.value;
+
+        if (navigator.clipboard && window.isSecureContext) {
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                showCopySuccess();
+            }).catch(err => {
+                console.error('Failed to copy share link:', err);
+                fallbackCopyText(textToCopy);
+            });
+        } else {
+            fallbackCopyText(textToCopy);
+        }
+    });
+
+    // Add mouse move handler for like text following cursor
+    document.querySelectorAll('.like-overlay').forEach(overlay => {
+        const likeText = overlay.querySelector('.like-text');
+
+        overlay.addEventListener('mousemove', function(e) {
+            const rect = overlay.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+
+            likeText.style.left = `${x}px`;
+            likeText.style.top = `${y}px`;
+            likeText.style.transform = 'translate(-50%, -50%)';
+        });
+
+        overlay.addEventListener('mouseleave', function() {
+            likeText.style.opacity = '0';
         });
     });
+
 
     // Handle like overlays
     document.querySelectorAll('.like-overlay').forEach(overlay => {
@@ -176,5 +194,38 @@ document.addEventListener('DOMContentLoaded', function() {
         gpt4Output.textContent = 'Error: ' + message;
         claudeOutput.removeAttribute('data-state');
         gpt4Output.removeAttribute('data-state');
+    }
+
+    function fallbackCopyText(text) {
+        // Fallback for browsers that don't support clipboard API
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-9999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+            document.execCommand('copy');
+            showCopySuccess();
+        } catch (err) {
+            console.error('Failed to copy text:', err);
+            alert('Failed to copy link to clipboard');
+        }
+
+        document.body.removeChild(textArea);
+    }
+
+    function showCopySuccess() {
+        const icon = copyShareLink.querySelector('i');
+        icon.classList.remove('fa-share');
+        icon.classList.add('fa-check');
+        copyShareLink.classList.add('copy-success');
+        setTimeout(() => {
+            icon.classList.remove('fa-check');
+            icon.classList.add('fa-share');
+            copyShareLink.classList.remove('copy-success');
+        }, 1500);
     }
 });

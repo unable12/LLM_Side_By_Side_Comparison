@@ -25,9 +25,47 @@
     transition: all 0.3s ease;
 }
 
-.card-body:hover .output-area:not(:empty):not([data-state="loading"]) ~ .like-overlay {
+.like-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: transparent;
+    display: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.like-text {
+    position: absolute;
+    color: var(--bs-success);
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+/* Show like overlay only when there's content */
+.output-area:not(:empty):not([data-state="loading"]) ~ .like-overlay {
+    display: block;
+}
+
+.output-area:not(:empty):not([data-state="loading"]) ~ .like-overlay:hover .like-text {
+    opacity: 1;
+}
+
+.liked {
+    border-color: var(--bs-success);
     background: rgba(40, 167, 69, 0.05);
     backdrop-filter: blur(5px);
+}
+
+.liked .like-text {
+    display: none;
 }
 
 .copy-btn:hover {
@@ -92,40 +130,6 @@
     position: relative;
 }
 
-.like-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: transparent;
-    display: none;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    border: 2px solid transparent;
-}
-
-.card:hover .like-overlay {
-    display: flex;
-}
-
-.liked {
-    border-color: var(--bs-success);
-    display: flex !important;
-}
-
-.liked .like-text {
-    display: none;
-}
-
-.like-text {
-    color: var(--bs-success);
-    font-size: 1.2rem;
-    font-weight: bold;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-}
 
 /* Hide like overlay when there's no content or loading */
 .output-area:empty ~ .like-overlay,
