@@ -4,6 +4,11 @@
     --bs-secondary-bg: #1a1a1a;
 }
 
+/* Base transitions */
+* {
+    transition: all 0.2s ease-in-out;
+}
+
 .output-area {
     min-height: 200px;
     white-space: pre-wrap;
@@ -11,13 +16,18 @@
     position: relative;
 }
 
+/* Card animations */
 .card {
     border-color: var(--bs-border-color);
     background-color: var(--bs-dark);
+    transform: translateY(0);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .card:hover {
-    transform: translateY(-2px);
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
 .card-body {
@@ -34,7 +44,7 @@
     background: transparent;
     display: none;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     border: 2px solid transparent;
 }
 
@@ -49,7 +59,7 @@
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
     pointer-events: none;
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Show like overlay only when there's content */
@@ -64,6 +74,7 @@
 
 .output-area:not(:empty):not([data-state="loading"]) ~ .like-overlay:hover .like-text {
     opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
 }
 
 .liked {
@@ -76,37 +87,27 @@
     display: none;
 }
 
+/* Button animations */
+.btn {
+    position: relative;
+    overflow: hidden;
+    transform: translateY(0);
+    transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
 .copy-btn:hover {
     color: var(--bs-primary);
 }
 
-.form-control:focus {
-    border-color: var(--bs-primary);
-    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
-}
-
-#promptInput {
-    resize: vertical;
-    background-color: var(--bs-dark);
-}
-
-.wordware-logo {
-    height: 30px;
-    opacity: 0.9;
-    transition: opacity 0.2s ease-in-out;
-}
-
-.wordware-logo:hover {
-    opacity: 1;
-}
-
-.conversation-starters {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
+/* Starter button animations */
 .starter-btn {
     background: var(--bs-dark);
     border: 1px solid var(--bs-border-color);
@@ -116,46 +117,117 @@
     cursor: pointer;
     transition: all 0.2s ease-in-out;
     font-size: 0.9rem;
+    transform: scale(1);
 }
 
 .starter-btn:hover {
-    transform: translateY(-2px);
+    transform: translateY(-2px) scale(1.05);
     background: var(--bs-secondary-bg);
     border-color: var(--bs-primary);
+    box-shadow: 0 4px 12px rgba(var(--bs-primary-rgb), 0.15);
 }
 
-/* Card styling */
-.card {
-    transition: transform 0.2s ease-in-out;
-    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+.starter-btn:active {
+    transform: translateY(1px) scale(0.98);
 }
 
-.card:hover {
+/* Input animations */
+.form-control {
+    transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+.form-control:focus {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(var(--bs-primary-rgb), 0.15);
+}
+
+
+#promptInput {
+    resize: vertical;
+    background-color: var(--bs-dark);
+}
+
+.wordware-logo {
+    height: 30px;
+    opacity: 0.9;
+    transition: all 0.3s ease;
+    transform: translateY(0);
+}
+
+.wordware-logo:hover {
+    opacity: 1;
     transform: translateY(-2px);
 }
 
-.card-body {
-    position: relative;
+.conversation-starters {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 
-/* Hide like overlay when there's no content or loading */
-.output-area:empty ~ .like-overlay,
-.output-area[data-state="loading"] ~ .like-overlay {
-    display: none !important;
-}
-
-/* Copy button positioning */
+/* Copy button animations */
 .bottom-copy-btn {
     position: absolute;
     bottom: 10px;
     right: 10px;
     opacity: 0;
-    transition: opacity 0.2s ease;
+    transition: opacity 0.3s ease, transform 0.2s ease;
 }
 
 .card:hover .bottom-copy-btn {
     opacity: 1;
+}
+
+.bottom-copy-btn:hover {
+    transform: scale(1.1);
+}
+
+/* Copy success animation */
+@keyframes copySuccess {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.copy-success {
+    animation: copySuccess 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background-color: var(--bs-success) !important;
+    color: white !important;
+}
+
+/* FAQ Accordion animations */
+.accordion {
+    --bs-accordion-bg: var(--bs-dark);
+    --bs-accordion-active-bg: var(--bs-secondary-bg);
+    --bs-accordion-btn-bg: var(--bs-dark);
+}
+
+.accordion-button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.accordion-button:not(.collapsed) {
+    color: var(--bs-light);
+    background-color: var(--bs-secondary-bg);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.accordion-button:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+.accordion-collapse {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hide like overlay when there's no content or loading */
+.output-area:empty ~ .like-overlay,
+.output-area[data-state="loading"] ~ .like-overlay {
+    display: none !important;
 }
 
 /* Display text styles */
@@ -174,32 +246,17 @@
     margin-right: auto;
 }
 
-/* FAQ Styling */
-.accordion {
-    --bs-accordion-bg: var(--bs-dark);
-    --bs-accordion-active-bg: var(--bs-secondary-bg);
-    --bs-accordion-btn-bg: var(--bs-dark);
+/* Share section animations */
+#shareSection {
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.accordion-button:not(.collapsed) {
-    color: var(--bs-light);
-    background-color: var(--bs-secondary-bg);
+#shareSection.d-none {
+    opacity: 0;
+    transform: translateY(10px);
 }
 
-.accordion-button:focus {
-    border-color: var(--bs-primary);
-    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
-}
-
-/* Copy success animation */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-.copy-success {
-    animation: pulse 0.3s ease-in-out;
-    background-color: var(--bs-success) !important;
-    color: white !important;
+#shareSection:not(.d-none) {
+    opacity: 1;
+    transform: translateY(0);
 }
