@@ -176,9 +176,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function clearOutputs() {
-        claudeOutput.textContent = 'Loading...';
+        claudeOutput.textContent = '';
         claudeOutput.setAttribute('data-state', 'loading');
-        gpt4Output.textContent = 'Loading...';
+        gpt4Output.textContent = '';
         gpt4Output.setAttribute('data-state', 'loading');
         shareSection.classList.add('d-none');
         // Hide like overlays during loading
