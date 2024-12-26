@@ -9,8 +9,8 @@
     <link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
 </head>
 <body>
-    <div class="container my-4">
-        <h1 class="text-center mb-4">LLM Comparison Tool</h1>
+    <div class="container my-5">
+        <h1 class="text-center mb-5">Side-by-Side LLM Comparison</h1>
 
         <div class="row mb-4">
             <div class="col">
@@ -32,6 +32,12 @@
                     <span class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                     Run Comparison
                 </button>
+                <div id="shareSection" class="text-center mt-3 d-none">
+                    <input type="text" id="shareLink" class="form-control" readonly>
+                    <button id="copyShareLink" class="btn btn-outline-secondary btn-sm mt-2">
+                        <i class="fas fa-share"></i> Copy Share Link
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -71,7 +77,9 @@
 
         <footer class="mt-5 text-center">
             <p class="mb-2">Powered by</p>
-            <img src="{{ url_for('static', filename='img/wordware_white.png') }}" alt="Wordware" class="wordware-logo">
+            <a href="https://www.wordware.ai" target="_blank" rel="noopener noreferrer">
+                <img src="{{ url_for('static', filename='img/wordware_white.png') }}" alt="Wordware" class="wordware-logo">
+            </a>
         </footer>
     </div>
 
