@@ -1,3 +1,9 @@
+:root {
+    --bs-body-bg: #000000;
+    --bs-dark: #0a0a0a;
+    --bs-secondary-bg: #1a1a1a;
+}
+
 .output-area {
     min-height: 200px;
     white-space: pre-wrap;
@@ -7,6 +13,7 @@
 
 .card {
     border-color: var(--bs-border-color);
+    background-color: var(--bs-dark);
 }
 
 .copy-btn:hover {
@@ -20,6 +27,7 @@
 
 #promptInput {
     resize: vertical;
+    background-color: var(--bs-dark);
 }
 
 .wordware-logo {
@@ -40,7 +48,7 @@
 }
 
 .starter-btn {
-    background: var(--bs-secondary-bg);
+    background: var(--bs-dark);
     border: 1px solid var(--bs-border-color);
     color: var(--bs-body-color);
     padding: 0.5rem 1rem;
@@ -52,7 +60,7 @@
 
 .starter-btn:hover {
     transform: translateY(-2px);
-    background: var(--bs-secondary-bg-subtle);
+    background: var(--bs-secondary-bg);
     border-color: var(--bs-primary);
 }
 
@@ -138,4 +146,21 @@
     max-width: 800px;
     margin-left: auto;
     margin-right: auto;
+}
+
+/* FAQ Styling */
+.accordion {
+    --bs-accordion-bg: var(--bs-dark);
+    --bs-accordion-active-bg: var(--bs-secondary-bg);
+    --bs-accordion-btn-bg: var(--bs-dark);
+}
+
+.accordion-button:not(.collapsed) {
+    color: var(--bs-light);
+    background-color: var(--bs-secondary-bg);
+}
+
+.accordion-button:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
 }
