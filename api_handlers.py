@@ -27,13 +27,30 @@ def call_wordware_api(url, prompt):
         # Log the raw response for debugging
         current_app.logger.debug(f"Raw Wordware API response: {response.text}")
 
-        # Parse the response text directly
-        response_data = response.json()
-        if isinstance(response_data, dict) and "output" in response_data:
-            return response_data["output"]
-        else:
-            current_app.logger.error(f"Unexpected response structure: {response_data}")
-            raise Exception("Invalid response format from Wordware API")
+        # Process the streaming response
+        generated_text = ""
+        for line in response.iter_lines():
+            if line:
+                import json
+                try:
+                    content = json.loads(line.decode('utf-8'))
+                    value = content.get('value', {})
+
+                    # Handle different types of chunks
+                    if value.get('type') == 'chunk':
+                        chunk_value = value.get('value', '')
+                        generated_text += chunk_value
+                    elif value.get('type') == 'outputs':
+                        # Final outputs received, return the generated text
+                        if generated_text:
+                            return generated_text.strip()
+                        # Fallback to outputs if no text was accumulated
+                        return value.get('values', {}).get('generation', '')
+                except json.JSONDecodeError as e:
+                    current_app.logger.error(f"Failed to parse chunk: {str(e)}")
+                    continue
+
+        return generated_text.strip() if generated_text else "No response generated"
 
     except requests.exceptions.RequestException as e:
         current_app.logger.error(f"Request error to Wordware API: {str(e)}")
