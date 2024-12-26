@@ -68,13 +68,14 @@
 }
 
 .output-area:not(:empty):not([data-state="loading"]) ~ .like-overlay:hover {
-    background: rgba(40, 167, 69, 0.1);
-    backdrop-filter: blur(4px);
+    background: rgba(40, 167, 69, 0.2);
+    backdrop-filter: blur(8px);
 }
 
 .output-area:not(:empty):not([data-state="loading"]) ~ .like-overlay:hover .like-text {
     opacity: 1;
     transform: translate(-50%, -50%) scale(1.1);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .liked {
@@ -312,7 +313,6 @@
     transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-
 .accordion-collapse.show {
     animation: none;
 }
@@ -365,4 +365,33 @@
         opacity: 1;
         transform: translateY(0);
     }
+}
+
+/* Loading animation */
+.output-area[data-state="loading"] {
+    position: relative;
+    min-height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bs-dark);
+    animation: loadingPulse 2s ease-in-out infinite;
+}
+
+@keyframes loadingPulse {
+    0%, 100% { background-color: var(--bs-dark); }
+    50% { background-color: var(--bs-secondary-bg); }
+}
+
+.output-area[data-state="loading"]::before {
+    content: "Loading...";
+    font-family: monospace;
+    color: var(--bs-light);
+    opacity: 0.7;
+    animation: loadingText 1.5s ease-in-out infinite;
+}
+
+@keyframes loadingText {
+    0%, 100% { opacity: 0.4; }
+    50% { opacity: 0.8; }
 }
