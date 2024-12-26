@@ -105,33 +105,13 @@
     text-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
-/* Hide like overlay when there's no content */
+/* Hide like overlay when there's no content or loading */
 .output-area:empty ~ .like-overlay,
 .output-area[data-state="loading"] ~ .like-overlay {
     display: none !important;
 }
 
-/* Sparkle animation for copy button */
-@keyframes sparkle {
-    0% {
-        transform: scale(1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.5);
-        opacity: 0.8;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 1;
-    }
-}
-
-.copy-success {
-    animation: sparkle 0.5s ease-in-out;
-}
-
-/* Bottom right copy button */
+/* Copy button positioning */
 .bottom-copy-btn {
     position: absolute;
     bottom: 10px;
@@ -140,11 +120,22 @@
     transition: opacity 0.2s ease;
 }
 
-.bottom-copy-btn img {
-    width: 16px;
-    height: 16px;
-}
-
 .card:hover .bottom-copy-btn {
     opacity: 1;
+}
+
+/* Display text styles */
+.display-4 {
+    font-weight: 600;
+}
+
+.text-secondary {
+    opacity: 0.8;
+}
+
+.lead {
+    font-size: 1.1rem;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }

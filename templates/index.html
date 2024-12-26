@@ -5,12 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LLM Comparison Tool</title>
     <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/font-awesome@6.4.2/css/all.min.css" rel="stylesheet">
     <link href="{{ url_for('static', filename='css/custom.css') }}" rel="stylesheet">
 </head>
 <body>
     <div class="container my-5">
-        <h1 class="text-center mb-5">Side-by-Side LLM Comparison</h1>
+        <div class="text-center mb-5">
+            <h1 class="display-4 mb-3">Side-by-Side LLM Comparison</h1>
+            <h2 class="h4 text-secondary mb-3">No sign-up needed. 100% free. Results in under 30 seconds.</h2>
+            <p class="lead text-secondary mb-5">Upload your prompt or text and get instant, side-by-side results from leading LLMs. Quickly identify the best model for your needs without the guesswork – simple, fast, and hassle-free.</p>
+        </div>
 
         <div class="row mb-4">
             <div class="col">
@@ -49,7 +52,7 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">Claude 3.5 Sonnet</h5>
                         <button class="btn btn-sm btn-outline-secondary copy-btn" data-target="claudeOutput">
-                            <img src="{{ url_for('static', filename='img/copy.png') }}" alt="Copy">
+                            Copy
                         </button>
                     </div>
                     <div class="card-body">
@@ -57,7 +60,7 @@
                             <!-- Claude output will be inserted here -->
                         </div>
                         <button class="btn btn-sm btn-outline-secondary bottom-copy-btn" data-target="claudeOutput">
-                            <img src="{{ url_for('static', filename='img/copy.png') }}" alt="Copy">
+                            Copy
                         </button>
                         <div class="like-overlay" data-model="claude">
                             <span class="like-text">I like this answer better</span>
@@ -71,7 +74,7 @@
                     <div class="card-header d-flex justify-content-between align-items-center">
                         <h5 class="mb-0">GPT-4o</h5>
                         <button class="btn btn-sm btn-outline-secondary copy-btn" data-target="gpt4Output">
-                            <img src="{{ url_for('static', filename='img/copy.png') }}" alt="Copy">
+                            Copy
                         </button>
                     </div>
                     <div class="card-body">
@@ -79,7 +82,7 @@
                             <!-- GPT-4 output will be inserted here -->
                         </div>
                         <button class="btn btn-sm btn-outline-secondary bottom-copy-btn" data-target="gpt4Output">
-                            <img src="{{ url_for('static', filename='img/copy.png') }}" alt="Copy">
+                            Copy
                         </button>
                         <div class="like-overlay" data-model="gpt4">
                             <span class="like-text">I like this answer better</span>
