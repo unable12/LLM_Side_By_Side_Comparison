@@ -1,0 +1,22 @@
+.output-area {
+    min-height: 200px;
+    white-space: pre-wrap;
+    font-family: monospace;
+}
+
+.card {
+    border-color: var(--bs-border-color);
+}
+
+.copy-btn:hover {
+    color: var(--bs-primary);
+}
+
+.form-control:focus {
+    border-color: var(--bs-primary);
+    box-shadow: 0 0 0 0.25rem rgba(var(--bs-primary-rgb), 0.25);
+}
+
+#promptInput {
+    resize: vertical;
+}
