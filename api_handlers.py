@@ -20,9 +20,24 @@ def call_wordware_api(url, prompt):
     }
 
     try:
+        current_app.logger.debug(f"Making request to Wordware API with payload: {payload}")
         response = requests.post(url, json=payload, headers=headers)
         response.raise_for_status()
-        return response.json()["output"]
+
+        # Log the raw response for debugging
+        current_app.logger.debug(f"Raw Wordware API response: {response.text}")
+
+        # Parse the response text directly
+        response_data = response.json()
+        if isinstance(response_data, dict) and "output" in response_data:
+            return response_data["output"]
+        else:
+            current_app.logger.error(f"Unexpected response structure: {response_data}")
+            raise Exception("Invalid response format from Wordware API")
+
+    except requests.exceptions.RequestException as e:
+        current_app.logger.error(f"Request error to Wordware API: {str(e)}")
+        raise Exception(f"Error calling Wordware API: {str(e)}")
     except Exception as e:
         current_app.logger.error(f"Wordware API error: {str(e)}")
         raise Exception(f"Error calling Wordware API: {str(e)}")
