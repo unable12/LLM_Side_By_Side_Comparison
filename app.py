@@ -23,14 +23,6 @@ app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
 # initialize the app with the extension, flask-sqlalchemy >= 3.0.x
 db.init_app(app)
 
-with app.app_context():
-    # Make sure to import the models here or their tables won't be created
-    import models  # noqa: F401
-
-    db.create_all()
-    # Create default templates
-    models.PromptTemplate.create_default_templates()
-
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -54,12 +46,6 @@ def compare():
     except Exception as e:
         app.logger.error(f"Error during API calls: {str(e)}")
         return jsonify({'error': 'An error occurred while processing your request'}), 500
-
-# Template management routes
-@app.route('/templates', methods=['GET'])
-def get_templates():
-    templates = models.PromptTemplate.query.filter_by(is_default=True).all()
-    return jsonify([template.to_dict() for template in templates])
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

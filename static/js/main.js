@@ -4,50 +4,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const spinner = runButton.querySelector('.spinner-border');
     const claudeOutput = document.getElementById('claudeOutput');
     const gpt4Output = document.getElementById('gpt4Output');
-    const templateSelect = document.getElementById('templateSelect');
-    const saveTemplateButton = document.getElementById('saveTemplate');
 
-    // Load templates when page loads
-    loadTemplates();
-
-    // Handle template selection
-    templateSelect.addEventListener('change', function() {
-        const selectedTemplate = this.options[this.selectedIndex];
-        if (selectedTemplate.value) {
-            promptInput.value = selectedTemplate.getAttribute('data-template');
-        }
-    });
-
-    // Handle save template
-    saveTemplateButton.addEventListener('click', async function() {
-        const name = document.getElementById('templateName').value;
-        const template = document.getElementById('templateContent').value;
-        const description = document.getElementById('templateDescription').value;
-
-        if (!name || !template) {
-            alert('Name and template content are required');
-            return;
-        }
-
-        try {
-            const response = await fetch('/templates', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name, template, description }),
-            });
-
-            if (response.ok) {
-                bootstrap.Modal.getInstance(document.getElementById('templateModal')).hide();
-                document.getElementById('templateForm').reset();
-                await loadTemplates();
-            } else {
-                throw new Error('Failed to save template');
-            }
-        } catch (error) {
-            alert('Error saving template: ' + error.message);
-        }
+    // Handle conversation starter buttons
+    document.querySelectorAll('.starter-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            promptInput.value = this.dataset.prompt;
+            promptInput.focus();
+        });
     });
 
     // Handle the run comparison button click
@@ -107,24 +70,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
     });
-
-    async function loadTemplates() {
-        try {
-            const response = await fetch('/templates');
-            const templates = await response.json();
-
-            templateSelect.innerHTML = '<option value="">Select a template...</option>';
-            templates.forEach(template => {
-                const option = document.createElement('option');
-                option.value = template.id;
-                option.textContent = template.name;
-                option.setAttribute('data-template', template.template);
-                templateSelect.appendChild(option);
-            });
-        } catch (error) {
-            console.error('Error loading templates:', error);
-        }
-    }
 
     function setLoading(isLoading) {
         runButton.disabled = isLoading;

@@ -31,7 +31,31 @@
     opacity: 1;
 }
 
-/* Enhanced card styling */
+.conversation-starters {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.starter-btn {
+    background: var(--bs-secondary-bg);
+    border: 1px solid var(--bs-border-color);
+    color: var(--bs-body-color);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    font-size: 0.9rem;
+}
+
+.starter-btn:hover {
+    transform: translateY(-2px);
+    background: var(--bs-secondary-bg-subtle);
+    border-color: var(--bs-primary);
+}
+
+/* Card styling */
 .card {
     transition: transform 0.2s ease-in-out;
     box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
