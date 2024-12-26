@@ -60,8 +60,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Handle copy buttons
-    document.querySelectorAll('.copy-btn').forEach(button => {
+    // Handle copy buttons (both header and bottom)
+    document.querySelectorAll('.copy-btn, .bottom-copy-btn').forEach(button => {
         button.addEventListener('click', function() {
             const targetId = this.dataset.target;
             const textToCopy = document.getElementById(targetId).textContent;
@@ -90,13 +90,30 @@ document.addEventListener('DOMContentLoaded', function() {
             const icon = this.querySelector('i');
             icon.classList.remove('fa-share');
             icon.classList.add('fa-check');
+            this.classList.add('copy-success');
             setTimeout(() => {
                 icon.classList.remove('fa-check');
                 icon.classList.add('fa-share');
+                this.classList.remove('copy-success');
             }, 1500);
         }).catch(err => {
             console.error('Failed to copy share link:', err);
             alert('Failed to copy share link');
+        });
+    });
+
+    // Handle like overlays
+    document.querySelectorAll('.like-overlay').forEach(overlay => {
+        overlay.addEventListener('click', function() {
+            if (!this.classList.contains('liked')) {
+                // Remove liked class from other overlay
+                document.querySelectorAll('.like-overlay').forEach(other => {
+                    if (other !== this) {
+                        other.classList.remove('liked');
+                    }
+                });
+                this.classList.add('liked');
+            }
         });
     });
 
