@@ -25,7 +25,7 @@
     transition: all 0.3s ease;
 }
 
-.card-body:hover {
+.card-body:hover .output-area:not(:empty):not([data-state="loading"]) ~ .like-overlay {
     background: rgba(40, 167, 69, 0.05);
     backdrop-filter: blur(5px);
 }

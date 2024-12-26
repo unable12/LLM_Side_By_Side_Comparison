@@ -16,7 +16,7 @@ def call_wordware_api(url, prompt):
         "inputs": {
             "input": prompt
         },
-        "version": "^1.0"
+        "version": "^1.1"
     }
 
     try:
