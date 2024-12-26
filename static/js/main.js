@@ -48,24 +48,25 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             const data = await response.json();
+            console.log('API Response:', data); // Debug log
 
-            // Add logging to debug response data
-            console.log('API Response:', data);
+            // Update the output areas
+            if (data.claude_response) {
+                claudeOutput.textContent = data.claude_response;
+                claudeOutput.removeAttribute('data-state');
+            }
 
-            // Clear loading state before setting content
-            claudeOutput.removeAttribute('data-state');
-            gpt4Output.removeAttribute('data-state');
-
-            // Set the output content
-            claudeOutput.textContent = data.claude_response || 'No response from Claude';
-            gpt4Output.textContent = data.gpt4_response || 'No response from GPT-4';
+            if (data.gpt4_response) {
+                gpt4Output.textContent = data.gpt4_response;
+                gpt4Output.removeAttribute('data-state');
+            }
 
             // Show like overlays after content is loaded
             document.querySelectorAll('.like-overlay').forEach(overlay => {
                 overlay.style.display = 'block';
             });
 
-            // Generate and display share link
+            // Update share link
             const shareUrl = new URL(window.location.href);
             shareUrl.searchParams.set('p', prompt);
             shareUrl.searchParams.set('c', btoa(data.claude_response || ''));
