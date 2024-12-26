@@ -367,7 +367,7 @@
     }
 }
 
-/* Loading animation */
+/* Output area loading state */
 .output-area[data-state="loading"] {
     position: relative;
     min-height: 200px;
