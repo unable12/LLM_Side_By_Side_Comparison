@@ -22,7 +22,11 @@ def call_wordware_api(url, prompt):
     try:
         current_app.logger.debug(f"Making request to Wordware API with payload: {payload}")
         response = requests.post(url, json=payload, headers=headers)
-        response.raise_for_status()
+
+        # Handle non-200 responses
+        if response.status_code != 200:
+            current_app.logger.error(f"Wordware API returned status code {response.status_code}: {response.text}")
+            return f"Error: API returned status {response.status_code}"
 
         # Log the raw response for debugging
         current_app.logger.debug(f"Raw Wordware API response: {response.text}")
@@ -54,21 +58,21 @@ def call_wordware_api(url, prompt):
 
     except requests.exceptions.RequestException as e:
         current_app.logger.error(f"Request error to Wordware API: {str(e)}")
-        raise Exception(f"Error calling Wordware API: {str(e)}")
+        return f"Error: {str(e)}"
     except Exception as e:
         current_app.logger.error(f"Wordware API error: {str(e)}")
-        raise Exception(f"Error calling Wordware API: {str(e)}")
+        return f"Error: {str(e)}"
 
 def call_claude_api(prompt):
     try:
         return call_wordware_api(CLAUDE_URL, prompt)
     except Exception as e:
         current_app.logger.error(f"Claude API error: {str(e)}")
-        raise Exception("Error calling Claude API")
+        return "Error calling Claude API"
 
 def call_gpt4_api(prompt):
     try:
         return call_wordware_api(GPT4_URL, prompt)
     except Exception as e:
         current_app.logger.error(f"GPT-4 API error: {str(e)}")
-        raise Exception("Error calling GPT-4 API")
+        return "Error calling GPT-4 API"

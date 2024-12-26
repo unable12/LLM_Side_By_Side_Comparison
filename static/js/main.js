@@ -43,36 +43,22 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.error || 'An error occurred');
+                throw new Error('API request failed');
             }
 
             const data = await response.json();
-            console.log('API Response:', data); // Debug log
 
-            // Update the output areas
-            if (data.claude_response) {
-                claudeOutput.textContent = data.claude_response;
-                claudeOutput.removeAttribute('data-state');
-            }
+            // Update outputs
+            updateOutput(claudeOutput, data.claude_response);
+            updateOutput(gpt4Output, data.gpt4_response);
 
-            if (data.gpt4_response) {
-                gpt4Output.textContent = data.gpt4_response;
-                gpt4Output.removeAttribute('data-state');
-            }
-
-            // Show like overlays after content is loaded
+            // Show like overlays
             document.querySelectorAll('.like-overlay').forEach(overlay => {
                 overlay.style.display = 'block';
             });
 
             // Update share link
-            const shareUrl = new URL(window.location.href);
-            shareUrl.searchParams.set('p', prompt);
-            shareUrl.searchParams.set('c', btoa(data.claude_response || ''));
-            shareUrl.searchParams.set('g', btoa(data.gpt4_response || ''));
-            shareLink.value = shareUrl.toString();
-            shareSection.classList.remove('d-none');
+            updateShareLink(prompt, data);
 
         } catch (error) {
             console.error('Error:', error);
@@ -81,6 +67,25 @@ document.addEventListener('DOMContentLoaded', function() {
             setLoading(false);
         }
     });
+
+    function updateOutput(outputElement, response) {
+        if (response) {
+            outputElement.textContent = response;
+            outputElement.removeAttribute('data-state');
+        } else {
+            outputElement.textContent = 'No response received';
+            outputElement.removeAttribute('data-state');
+        }
+    }
+
+    function updateShareLink(prompt, data) {
+        const shareUrl = new URL(window.location.href);
+        shareUrl.searchParams.set('p', prompt);
+        shareUrl.searchParams.set('c', btoa(data.claude_response || ''));
+        shareUrl.searchParams.set('g', btoa(data.gpt4_response || ''));
+        shareLink.value = shareUrl.toString();
+        shareSection.classList.remove('d-none');
+    }
 
     // Handle copy buttons
     document.querySelectorAll('.bottom-copy-btn').forEach(button => {

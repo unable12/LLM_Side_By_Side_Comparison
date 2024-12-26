@@ -1,4 +1,4 @@
-::root {
+:root {
     --bs-body-bg: #000000;
     --bs-dark: #0a0a0a;
     --bs-secondary-bg: #1a1a1a;
@@ -19,10 +19,11 @@
 /* Card animations */
 .card {
     border-color: var(--bs-border-color);
-    background-color: var(--bs-dark);
+    background-color: #000000 !important;
     transform: translateY(0);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--bs-border-color);
 }
 
 .card:hover {
@@ -33,6 +34,12 @@
 .card-body {
     position: relative;
     transition: all 0.3s ease;
+    background-color: #000000 !important;
+}
+
+.card-header {
+    background-color: #0a0a0a !important;
+    border-bottom: 1px solid var(--bs-border-color);
 }
 
 .like-overlay {
@@ -385,6 +392,16 @@
     border-radius: 50%;
     border-top-color: transparent;
     animation: loadingSpin 1s linear infinite;
+    margin-bottom: 20px;
+}
+
+.output-area[data-state="loading"]::after {
+    content: 'Loading...';
+    position: absolute;
+    top: calc(50% + 40px);
+    font-family: monospace;
+    color: var(--bs-secondary);
+    opacity: 0.8;
 }
 
 @keyframes loadingSpin {
