@@ -97,10 +97,12 @@
 
 .btn:hover {
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .btn:active {
     transform: translateY(1px);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .copy-btn:hover {
@@ -118,6 +120,8 @@
     transition: all 0.2s ease-in-out;
     font-size: 0.9rem;
     transform: scale(1);
+    position: relative;
+    overflow: hidden;
 }
 
 .starter-btn:hover {
@@ -131,6 +135,36 @@
     transform: translateY(1px) scale(0.98);
 }
 
+/* Ripple effect */
+.starter-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+.starter-btn:focus:not(:active)::after {
+    animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0, 0);
+        opacity: 0.5;
+    }
+    100% {
+        transform: scale(100, 100);
+        opacity: 0;
+    }
+}
+
 /* Input animations */
 .form-control {
     transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
@@ -140,7 +174,6 @@
     transform: translateY(-1px);
     box-shadow: 0 4px 12px rgba(var(--bs-primary-rgb), 0.15);
 }
-
 
 #promptInput {
     resize: vertical;
@@ -165,7 +198,6 @@
     flex-wrap: wrap;
     justify-content: center;
 }
-
 
 /* Copy button animations */
 .bottom-copy-btn {
@@ -224,6 +256,21 @@
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.accordion-collapse.show {
+    animation: accordionShow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes accordionShow {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 /* Hide like overlay when there's no content or loading */
 .output-area:empty ~ .like-overlay,
 .output-area[data-state="loading"] ~ .like-overlay {
@@ -248,15 +295,28 @@
 
 /* Share section animations */
 #shareSection {
-    transition: opacity 0.3s ease, transform 0.3s ease;
+    transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #shareSection.d-none {
     opacity: 0;
     transform: translateY(10px);
+    pointer-events: none;
 }
 
 #shareSection:not(.d-none) {
     opacity: 1;
     transform: translateY(0);
+    animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
