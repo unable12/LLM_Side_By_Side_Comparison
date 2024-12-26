@@ -109,27 +109,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Add mouse move handler for like text following cursor
-    document.querySelectorAll('.like-overlay').forEach(overlay => {
-        const likeText = overlay.querySelector('.like-text');
 
-        overlay.addEventListener('mousemove', function(e) {
-            const rect = overlay.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-
-            likeText.style.left = `${x}px`;
-            likeText.style.top = `${y}px`;
-            likeText.style.transform = 'translate(-50%, -50%)';
-        });
-
-        overlay.addEventListener('mouseleave', function() {
-            likeText.style.opacity = '0';
-        });
-    });
-
-
-    // Handle like overlays
+    // Remove mouse move handler and simplify like overlay behavior
     document.querySelectorAll('.like-overlay').forEach(overlay => {
         overlay.addEventListener('click', function(e) {
             const outputArea = this.closest('.card-body').querySelector('.output-area');
@@ -146,6 +127,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
                 this.classList.add('liked');
+            } else {
+                this.classList.remove('liked');
             }
         });
     });
