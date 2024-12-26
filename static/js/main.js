@@ -41,7 +41,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             if (response.ok) {
                 claudeOutput.textContent = data.claude_response;
+                claudeOutput.removeAttribute('data-state');
                 gpt4Output.textContent = data.gpt4_response;
+                gpt4Output.removeAttribute('data-state');
 
                 // Generate and display share link
                 const shareUrl = new URL(window.location.href);
@@ -54,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error(data.error || 'An error occurred');
             }
         } catch (error) {
+            console.error('Error:', error);
             showError(error.message);
         } finally {
             setLoading(false);
@@ -65,7 +68,6 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
             const targetId = this.dataset.target;
             const textToCopy = document.getElementById(targetId).textContent;
-            const icon = this.querySelector('img'); //Corrected this line
 
             navigator.clipboard.writeText(textToCopy).then(() => {
                 // Visual feedback for copy
@@ -102,10 +104,12 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.like-overlay').forEach(overlay => {
         overlay.addEventListener('click', function(e) {
             const outputArea = this.closest('.card-body').querySelector('.output-area');
-            const content = outputArea.textContent.trim();
+            if (!outputArea || !outputArea.textContent.trim() || outputArea.getAttribute('data-state') === 'loading') {
+                e.preventDefault();
+                return;
+            }
 
-            // Only allow liking if there's content and it's not "Loading..."
-            if (content && content !== 'Loading...' && !this.classList.contains('liked')) {
+            if (!this.classList.contains('liked')) {
                 // Remove liked class from other overlay
                 document.querySelectorAll('.like-overlay').forEach(other => {
                     if (other !== this) {
@@ -113,9 +117,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
                 });
                 this.classList.add('liked');
-            } else {
-                // Prevent the hover effect from showing on empty/loading state
-                e.preventDefault();
             }
         });
     });
@@ -149,12 +150,16 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function clearOutputs() {
         claudeOutput.textContent = 'Loading...';
+        claudeOutput.setAttribute('data-state', 'loading');
         gpt4Output.textContent = 'Loading...';
+        gpt4Output.setAttribute('data-state', 'loading');
         shareSection.classList.add('d-none');
     }
 
     function showError(message) {
         claudeOutput.textContent = 'Error: ' + message;
         gpt4Output.textContent = 'Error: ' + message;
+        claudeOutput.removeAttribute('data-state');
+        gpt4Output.removeAttribute('data-state');
     }
 });

@@ -107,7 +107,7 @@
 
 /* Hide like overlay when there's no content */
 .output-area:empty ~ .like-overlay,
-.output-area:contains("Loading...") ~ .like-overlay {
+.output-area[data-state="loading"] ~ .like-overlay {
     display: none !important;
 }
 
