@@ -8,6 +8,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const shareLink = document.getElementById('shareLink');
     const copyShareLink = document.getElementById('copyShareLink');
 
+    // Hide like overlays initially
+    document.querySelectorAll('.like-overlay').forEach(overlay => {
+        overlay.style.display = 'none';
+    });
+
     // Handle conversation starter buttons
     document.querySelectorAll('.starter-btn').forEach(button => {
         button.addEventListener('click', function() {
@@ -45,11 +50,16 @@ document.addEventListener('DOMContentLoaded', function() {
                 gpt4Output.textContent = data.gpt4_response;
                 gpt4Output.removeAttribute('data-state');
 
-                // Generate and display share link
+                // Show like overlays after content is loaded
+                document.querySelectorAll('.like-overlay').forEach(overlay => {
+                    overlay.style.display = 'block'; // Show overlays
+                });
+
+                // Generate and display share link with shorter parameters
                 const shareUrl = new URL(window.location.href);
-                shareUrl.searchParams.set('prompt', prompt);
-                shareUrl.searchParams.set('claude', data.claude_response);
-                shareUrl.searchParams.set('gpt4', data.gpt4_response);
+                shareUrl.searchParams.set('p', prompt);
+                shareUrl.searchParams.set('c', btoa(data.claude_response));
+                shareUrl.searchParams.set('g', btoa(data.gpt4_response));
                 shareLink.value = shareUrl.toString();
                 shareSection.classList.remove('d-none');
             } else {
@@ -63,8 +73,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Handle copy buttons (both header and bottom)
-    document.querySelectorAll('.copy-btn, .bottom-copy-btn').forEach(button => {
+    // Handle copy buttons (modified to only use bottom buttons)
+    document.querySelectorAll('.bottom-copy-btn').forEach(button => {
         button.addEventListener('click', function() {
             const targetId = this.dataset.target;
             const textToCopy = document.getElementById(targetId).textContent;
@@ -82,7 +92,8 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Handle share link copy
+    // Renamed button text and updated functionality
+    copyShareLink.textContent = "Share These Results";
     copyShareLink.addEventListener('click', function() {
         navigator.clipboard.writeText(shareLink.value).then(() => {
             const icon = this.querySelector('i');
@@ -124,14 +135,14 @@ document.addEventListener('DOMContentLoaded', function() {
     // Check for shared comparison in URL
     window.addEventListener('load', function() {
         const urlParams = new URLSearchParams(window.location.search);
-        const sharedPrompt = urlParams.get('prompt');
-        const sharedClaude = urlParams.get('claude');
-        const sharedGpt4 = urlParams.get('gpt4');
+        const sharedPrompt = urlParams.get('p');
+        const sharedClaude = urlParams.get('c');
+        const sharedGpt4 = urlParams.get('g');
 
         if (sharedPrompt && sharedClaude && sharedGpt4) {
             promptInput.value = sharedPrompt;
-            claudeOutput.textContent = sharedClaude;
-            gpt4Output.textContent = sharedGpt4;
+            claudeOutput.textContent = atob(sharedClaude);
+            gpt4Output.textContent = atob(sharedGpt4);
             shareSection.classList.remove('d-none');
             shareLink.value = window.location.href;
         }
@@ -154,6 +165,10 @@ document.addEventListener('DOMContentLoaded', function() {
         gpt4Output.textContent = 'Loading...';
         gpt4Output.setAttribute('data-state', 'loading');
         shareSection.classList.add('d-none');
+        // Hide like overlays during loading
+        document.querySelectorAll('.like-overlay').forEach(overlay => {
+            overlay.style.display = 'none';
+        });
     }
 
     function showError(message) {
