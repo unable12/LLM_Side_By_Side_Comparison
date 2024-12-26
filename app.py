@@ -1,9 +1,35 @@
 import os
 from flask import Flask, render_template, request, jsonify
+from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.orm import DeclarativeBase
 from api_handlers import call_claude_api, call_gpt4_api
 
+
+class Base(DeclarativeBase):
+    pass
+
+
+db = SQLAlchemy(model_class=Base)
+# create the app
 app = Flask(__name__)
-app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "development_key"
+# setup a secret key, required by sessions
+app.secret_key = os.environ.get("FLASK_SECRET_KEY") or "a secret key"
+# configure the database, relative to the app instance folder
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("DATABASE_URL")
+app.config["SQLALCHEMY_ENGINE_OPTIONS"] = {
+    "pool_recycle": 300,
+    "pool_pre_ping": True,
+}
+# initialize the app with the extension, flask-sqlalchemy >= 3.0.x
+db.init_app(app)
+
+with app.app_context():
+    # Make sure to import the models here or their tables won't be created
+    import models  # noqa: F401
+
+    db.create_all()
+    # Create default templates
+    models.PromptTemplate.create_default_templates()
 
 @app.route('/')
 def index():
@@ -28,3 +54,12 @@ def compare():
     except Exception as e:
         app.logger.error(f"Error during API calls: {str(e)}")
         return jsonify({'error': 'An error occurred while processing your request'}), 500
+
+# Template management routes
+@app.route('/templates', methods=['GET'])
+def get_templates():
+    templates = models.PromptTemplate.query.filter_by(is_default=True).all()
+    return jsonify([template.to_dict() for template in templates])
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000, debug=True)
