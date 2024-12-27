@@ -4,21 +4,59 @@ from flask import current_app
 
 WORDWARE_API_KEY = os.environ.get('WORDWARE_API_KEY')
 
-# Claude model URLs
-CLAUDE_URLS = {
-    'claude-3-sonnet': "https://app.wordware.ai/api/released-app/2e33b894-8412-4970-8dce-6f05d765ac3a/run",
-    'claude-3-opus': "https://app.wordware.ai/api/released-app/2e33b894-8412-4970-8dce-6f05d765ac3a/run",
-    'claude-2.1': "https://app.wordware.ai/api/released-app/2e33b894-8412-4970-8dce-6f05d765ac3a/run"
+# Model URLs and their respective versions
+MODEL_CONFIGS = {
+    # LLM - 1 Models (Claude)
+    'claude-3-sonnet': {
+        'url': "https://app.wordware.ai/api/released-app/2e33b894-8412-4970-8dce-6f05d765ac3a/run",
+        'version': "^1.3"
+    },
+    'claude-3-opus': {
+        'url': "https://app.wordware.ai/api/released-app/2e33b894-8412-4970-8dce-6f05d765ac3a/run",
+        'version': "^1.3"
+    },
+    'claude-2.1': {
+        'url': "https://app.wordware.ai/api/released-app/2e33b894-8412-4970-8dce-6f05d765ac3a/run",
+        'version': "^1.3"
+    },
+    'claude-3-haiku': {
+        'url': "https://app.wordware.ai/api/released-app/42299e31-f438-4baa-b4e4-f143fd34c367/run",
+        'version': "^1.0"
+    },
+
+    # LLM - 2 Models
+    'gpt-4': {
+        'url': "https://app.wordware.ai/api/released-app/c4ae4021-0e70-4072-a4d1-a3141d493700/run",
+        'version': "^1.3"
+    },
+    'gpt-4-turbo': {
+        'url': "https://app.wordware.ai/api/released-app/c4ae4021-0e70-4072-a4d1-a3141d493700/run",
+        'version': "^1.3"
+    },
+    'gpt-3.5-turbo': {
+        'url': "https://app.wordware.ai/api/released-app/c4ae4021-0e70-4072-a4d1-a3141d493700/run",
+        'version': "^1.3"
+    },
+    'gemini-1.5-pro': {
+        'url': "https://app.wordware.ai/api/released-app/59bb9ab6-9bbe-49c0-8773-2e0bbd855337/run",
+        'version': "^1.0"
+    },
+    'mistral-large-2': {
+        'url': "https://app.wordware.ai/api/released-app/42f7385c-7106-438d-b48e-053c481cae1c/run",
+        'version': "^1.0"
+    },
+    'llama-3.2-90b': {
+        'url': "https://app.wordware.ai/api/released-app/cde9fa72-7a30-4a6d-82ca-c4975baab4e8/run",
+        'version': "^1.0"
+    }
 }
 
-# GPT model URLs
-GPT_URLS = {
-    'gpt-4': "https://app.wordware.ai/api/released-app/c4ae4021-0e70-4072-a4d1-a3141d493700/run",
-    'gpt-4-turbo': "https://app.wordware.ai/api/released-app/c4ae4021-0e70-4072-a4d1-a3141d493700/run",
-    'gpt-3.5-turbo': "https://app.wordware.ai/api/released-app/c4ae4021-0e70-4072-a4d1-a3141d493700/run"
-}
+def call_wordware_api(model, prompt):
+    if model not in MODEL_CONFIGS:
+        raise ValueError(f"Unknown model: {model}")
 
-def call_wordware_api(url, prompt):
+    config = MODEL_CONFIGS[model]
+
     headers = {
         "Authorization": f"Bearer {WORDWARE_API_KEY}",
         "Content-Type": "application/json"
@@ -28,12 +66,12 @@ def call_wordware_api(url, prompt):
         "inputs": {
             "input": prompt
         },
-        "version": "^1.3"
+        "version": config['version']
     }
 
     try:
         current_app.logger.debug(f"Making request to Wordware API with payload: {payload}")
-        response = requests.post(url, json=payload, headers=headers)
+        response = requests.post(config['url'], json=payload, headers=headers)
 
         # Handle non-200 responses
         if response.status_code != 200:
@@ -77,16 +115,14 @@ def call_wordware_api(url, prompt):
 
 def call_claude_api(prompt, model='claude-3-sonnet'):
     try:
-        url = CLAUDE_URLS.get(model, CLAUDE_URLS['claude-3-sonnet'])
-        return call_wordware_api(url, prompt)
+        return call_wordware_api(model, prompt)
     except Exception as e:
         current_app.logger.error(f"Claude API error: {str(e)}")
         return "Error calling Claude API"
 
 def call_gpt4_api(prompt, model='gpt-4'):
     try:
-        url = GPT_URLS.get(model, GPT_URLS['gpt-4'])
-        return call_wordware_api(url, prompt)
+        return call_wordware_api(model, prompt)
     except Exception as e:
         current_app.logger.error(f"GPT-4 API error: {str(e)}")
         return "Error calling GPT-4 API"
