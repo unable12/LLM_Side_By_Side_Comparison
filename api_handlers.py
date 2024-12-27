@@ -11,21 +11,13 @@ MODEL_CONFIGS = {
         'url': "https://app.wordware.ai/api/released-app/2e33b894-8412-4970-8dce-6f05d765ac3a/run",
         'version': "^1.3"
     },
-    'claude-3-opus': {
-        'url': "https://app.wordware.ai/api/released-app/2e33b894-8412-4970-8dce-6f05d765ac3a/run",
-        'version': "^1.3"
-    },
-    'claude-2.1': {
-        'url': "https://app.wordware.ai/api/released-app/2e33b894-8412-4970-8dce-6f05d765ac3a/run",
-        'version': "^1.3"
-    },
     'claude-3-haiku': {
         'url': "https://app.wordware.ai/api/released-app/42299e31-f438-4baa-b4e4-f143fd34c367/run",
         'version': "^1.0"
     },
 
     # LLM - 2 Models
-    'gpt-4': {
+    'gpt-4o': {
         'url': "https://app.wordware.ai/api/released-app/c4ae4021-0e70-4072-a4d1-a3141d493700/run",
         'version': "^1.3"
     },
@@ -120,7 +112,7 @@ def call_claude_api(prompt, model='claude-3-sonnet'):
         current_app.logger.error(f"Claude API error: {str(e)}")
         return "Error calling Claude API"
 
-def call_gpt4_api(prompt, model='gpt-4'):
+def call_gpt4_api(prompt, model='gpt-4o'):
     try:
         return call_wordware_api(model, prompt)
     except Exception as e:
