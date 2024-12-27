@@ -37,9 +37,11 @@
     background-color: #000000 !important;
 }
 
+/* Card header styling */
 .card-header {
     background-color: #0a0a0a !important;
     border-bottom: 1px solid var(--bs-border-color);
+    padding: 0.75rem;
 }
 
 .like-overlay {
@@ -323,6 +325,30 @@
 .accordion-collapse.show {
     animation: none;
 }
+
+/* Dropdown styling */
+.form-select-lg {
+    background-color: transparent;
+    border: none;
+    color: var(--bs-light);
+    font-weight: 500;
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 0.5rem 2rem 0.5rem 0.75rem;
+    width: 100%;
+    transition: all 0.2s ease-in-out;
+}
+
+.form-select-lg:focus {
+    box-shadow: none;
+    border-color: transparent;
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+}
+
+.form-select-lg:hover {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+}
+
 
 /* Hide like overlay when there's no content or loading */
 .output-area:empty ~ .like-overlay,
