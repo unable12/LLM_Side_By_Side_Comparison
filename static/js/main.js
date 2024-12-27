@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             // Get the text content, preserving whitespace
-            const textToCopy = outputElement.innerText.trim();
+            const textToCopy = outputElement.innerText;
 
             // Don't copy if there's no text
             if (!textToCopy) {
