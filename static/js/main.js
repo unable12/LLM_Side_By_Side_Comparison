@@ -92,9 +92,17 @@ document.addEventListener('DOMContentLoaded', function() {
         button.addEventListener('click', function() {
             const targetId = this.dataset.target;
             const outputElement = document.getElementById(targetId);
-            const textToCopy = outputElement.textContent;
 
-            if (!textToCopy || outputElement.getAttribute('data-state') === 'loading') {
+            // Don't copy if there's no content or if it's loading
+            if (!outputElement || outputElement.getAttribute('data-state') === 'loading') {
+                return;
+            }
+
+            // Get the text content, preserving whitespace
+            const textToCopy = outputElement.innerText.trim();
+
+            // Don't copy if there's no text
+            if (!textToCopy) {
                 return;
             }
 
