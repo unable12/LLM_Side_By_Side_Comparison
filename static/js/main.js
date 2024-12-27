@@ -91,7 +91,12 @@ document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.bottom-copy-btn').forEach(button => {
         button.addEventListener('click', function() {
             const targetId = this.dataset.target;
-            const textToCopy = document.getElementById(targetId).textContent;
+            const outputElement = document.getElementById(targetId);
+            const textToCopy = outputElement.textContent;
+
+            if (!textToCopy || outputElement.getAttribute('data-state') === 'loading') {
+                return;
+            }
 
             navigator.clipboard.writeText(textToCopy).then(() => {
                 // Visual feedback for copy
