@@ -6,7 +6,7 @@ WORDWARE_API_KEY = os.environ.get('WORDWARE_API_KEY')
 
 # Model URLs and their respective versions
 MODEL_CONFIGS = {
-    # LLM - 1 Models (Claude)
+    # Available Models
     'claude-3-sonnet': {
         'url': "https://app.wordware.ai/api/released-app/2e33b894-8412-4970-8dce-6f05d765ac3a/run",
         'version': "^1.3"
@@ -15,17 +15,7 @@ MODEL_CONFIGS = {
         'url': "https://app.wordware.ai/api/released-app/42299e31-f438-4baa-b4e4-f143fd34c367/run",
         'version': "^1.0"
     },
-
-    # LLM - 2 Models
     'gpt-4o': {
-        'url': "https://app.wordware.ai/api/released-app/c4ae4021-0e70-4072-a4d1-a3141d493700/run",
-        'version': "^1.3"
-    },
-    'gpt-4-turbo': {
-        'url': "https://app.wordware.ai/api/released-app/c4ae4021-0e70-4072-a4d1-a3141d493700/run",
-        'version': "^1.3"
-    },
-    'gpt-3.5-turbo': {
         'url': "https://app.wordware.ai/api/released-app/c4ae4021-0e70-4072-a4d1-a3141d493700/run",
         'version': "^1.3"
     },
