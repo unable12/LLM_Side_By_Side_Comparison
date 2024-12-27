@@ -2,7 +2,7 @@ import os
 from flask import Flask, render_template, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.orm import DeclarativeBase
-from api_handlers import call_claude_api, call_gpt4_api
+from api_handlers import call_wordware_api
 
 
 class Base(DeclarativeBase):
@@ -32,19 +32,19 @@ def compare():
     try:
         data = request.json
         prompt = data.get('prompt')
-        claude_model = data.get('claude_model', 'claude-3-sonnet')
-        gpt_model = data.get('gpt_model', 'gpt-4')
+        model1 = data.get('claude_model', 'claude-3-sonnet')
+        model2 = data.get('gpt_model', 'gpt-4o')
 
         if not prompt:
             return jsonify({'error': 'Prompt is required'}), 400
 
         # Call both APIs with selected models
-        claude_response = call_claude_api(prompt, model=claude_model)
-        gpt4_response = call_gpt4_api(prompt, model=gpt_model)
+        response1 = call_wordware_api(model1, prompt)
+        response2 = call_wordware_api(model2, prompt)
 
         return jsonify({
-            'claude_response': claude_response,
-            'gpt4_response': gpt4_response
+            'claude_response': response1,
+            'gpt4_response': response2
         })
 
     except Exception as e:

@@ -34,6 +34,9 @@ MODEL_CONFIGS = {
 }
 
 def call_wordware_api(model, prompt):
+    """
+    Unified function to call Wordware API for any model
+    """
     if model not in MODEL_CONFIGS:
         raise ValueError(f"Unknown model: {model}")
 
@@ -94,17 +97,3 @@ def call_wordware_api(model, prompt):
     except Exception as e:
         current_app.logger.error(f"Wordware API error: {str(e)}")
         return f"Error: {str(e)}"
-
-def call_claude_api(prompt, model='claude-3-sonnet'):
-    try:
-        return call_wordware_api(model, prompt)
-    except Exception as e:
-        current_app.logger.error(f"Claude API error: {str(e)}")
-        return "Error calling Claude API"
-
-def call_gpt4_api(prompt, model='gpt-4o'):
-    try:
-        return call_wordware_api(model, prompt)
-    except Exception as e:
-        current_app.logger.error(f"GPT-4 API error: {str(e)}")
-        return "Error calling GPT-4 API"
