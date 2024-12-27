@@ -46,6 +46,7 @@
 
 .card-header .d-flex {
     gap: 1rem;
+    width: 100%;
 }
 
 .like-overlay {
@@ -365,6 +366,35 @@
     padding: 10px;
 }
 
+/* Style for dropdown when open */
+.form-select-lg:focus option:checked {
+    background: linear-gradient(0deg, rgba(var(--bs-primary-rgb), 0.1) 0%, rgba(var(--bs-primary-rgb), 0.2) 100%);
+    color: var(--bs-light);
+}
+
+.form-select-lg option:hover {
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+}
+
+/* Custom select styling */
+select.form-select-lg {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
+
+select.form-select-lg::-ms-expand {
+    display: none;
+}
+
+
+.form-select-lg {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='m2 5 6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    padding-right: 2.5rem;
+}
 
 /* Hide like overlay when there's no content or loading */
 .output-area:empty ~ .like-overlay,
