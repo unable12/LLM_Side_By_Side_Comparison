@@ -50,7 +50,12 @@
             <div class="col-md-6 mb-3">
                 <div class="card h-100">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">Claude 3.5 Sonnet</h5>
+                        <h5 class="mb-0">Claude</h5>
+                        <select class="form-select form-select-sm w-auto" id="claudeModel">
+                            <option value="claude-3-sonnet">Claude 3 Sonnet</option>
+                            <option value="claude-3-opus">Claude 3 Opus</option>
+                            <option value="claude-2.1">Claude 2.1</option>
+                        </select>
                     </div>
                     <div class="card-body">
                         <div id="claudeOutput" class="output-area">
@@ -69,11 +74,16 @@
             <div class="col-md-6 mb-3">
                 <div class="card h-100">
                     <div class="card-header d-flex justify-content-between align-items-center">
-                        <h5 class="mb-0">GPT-4o</h5>
+                        <h5 class="mb-0">GPT</h5>
+                        <select class="form-select form-select-sm w-auto" id="gptModel">
+                            <option value="gpt-4">GPT-4</option>
+                            <option value="gpt-4-turbo">GPT-4 Turbo</option>
+                            <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                        </select>
                     </div>
                     <div class="card-body">
                         <div id="gpt4Output" class="output-area">
-                            <!-- GPT-4 output will be inserted here -->
+                            <!-- GPT output will be inserted here -->
                         </div>
                         <button class="btn btn-sm btn-outline-secondary bottom-copy-btn" data-target="gpt4Output">
                             Copy

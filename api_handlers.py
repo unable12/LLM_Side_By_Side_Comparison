@@ -3,8 +3,20 @@ import requests
 from flask import current_app
 
 WORDWARE_API_KEY = os.environ.get('WORDWARE_API_KEY')
-CLAUDE_URL = "https://app.wordware.ai/api/released-app/2e33b894-8412-4970-8dce-6f05d765ac3a/run"
-GPT4_URL = "https://app.wordware.ai/api/released-app/c4ae4021-0e70-4072-a4d1-a3141d493700/run"
+
+# Claude model URLs
+CLAUDE_URLS = {
+    'claude-3-sonnet': "https://app.wordware.ai/api/released-app/2e33b894-8412-4970-8dce-6f05d765ac3a/run",
+    'claude-3-opus': "https://app.wordware.ai/api/released-app/2e33b894-8412-4970-8dce-6f05d765ac3a/run",
+    'claude-2.1': "https://app.wordware.ai/api/released-app/2e33b894-8412-4970-8dce-6f05d765ac3a/run"
+}
+
+# GPT model URLs
+GPT_URLS = {
+    'gpt-4': "https://app.wordware.ai/api/released-app/c4ae4021-0e70-4072-a4d1-a3141d493700/run",
+    'gpt-4-turbo': "https://app.wordware.ai/api/released-app/c4ae4021-0e70-4072-a4d1-a3141d493700/run",
+    'gpt-3.5-turbo': "https://app.wordware.ai/api/released-app/c4ae4021-0e70-4072-a4d1-a3141d493700/run"
+}
 
 def call_wordware_api(url, prompt):
     headers = {
@@ -63,16 +75,18 @@ def call_wordware_api(url, prompt):
         current_app.logger.error(f"Wordware API error: {str(e)}")
         return f"Error: {str(e)}"
 
-def call_claude_api(prompt):
+def call_claude_api(prompt, model='claude-3-sonnet'):
     try:
-        return call_wordware_api(CLAUDE_URL, prompt)
+        url = CLAUDE_URLS.get(model, CLAUDE_URLS['claude-3-sonnet'])
+        return call_wordware_api(url, prompt)
     except Exception as e:
         current_app.logger.error(f"Claude API error: {str(e)}")
         return "Error calling Claude API"
 
-def call_gpt4_api(prompt):
+def call_gpt4_api(prompt, model='gpt-4'):
     try:
-        return call_wordware_api(GPT4_URL, prompt)
+        url = GPT_URLS.get(model, GPT_URLS['gpt-4'])
+        return call_wordware_api(url, prompt)
     except Exception as e:
         current_app.logger.error(f"GPT-4 API error: {str(e)}")
         return "Error calling GPT-4 API"

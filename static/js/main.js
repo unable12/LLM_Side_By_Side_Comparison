@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const shareSection = document.getElementById('shareSection');
     const shareLink = document.getElementById('shareLink');
     const copyShareLink = document.getElementById('copyShareLink');
+    const claudeModel = document.getElementById('claudeModel');
+    const gptModel = document.getElementById('gptModel');
 
     // Hide like overlays initially
     document.querySelectorAll('.like-overlay').forEach(overlay => {
@@ -39,7 +41,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ prompt }),
+                body: JSON.stringify({ 
+                    prompt,
+                    claude_model: claudeModel.value,
+                    gpt_model: gptModel.value
+                }),
             });
 
             if (!response.ok) {
@@ -58,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             // Update share link
-            updateShareLink(prompt, data);
+            updateShareLink(prompt, data, claudeModel.value, gptModel.value);
 
         } catch (error) {
             console.error('Error:', error);
@@ -78,11 +84,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function updateShareLink(prompt, data) {
+    function updateShareLink(prompt, data, claudeModel, gptModel) {
         const shareUrl = new URL(window.location.href);
         shareUrl.searchParams.set('p', prompt);
         shareUrl.searchParams.set('c', btoa(data.claude_response || ''));
         shareUrl.searchParams.set('g', btoa(data.gpt4_response || ''));
+        shareUrl.searchParams.set('cm', claudeModel);
+        shareUrl.searchParams.set('gm', gptModel);
         shareLink.value = shareUrl.toString();
         shareSection.classList.remove('d-none');
     }
@@ -167,6 +175,8 @@ document.addEventListener('DOMContentLoaded', function() {
         const sharedPrompt = urlParams.get('p');
         const sharedClaude = urlParams.get('c');
         const sharedGpt4 = urlParams.get('g');
+        const sharedClaudeModel = urlParams.get('cm');
+        const sharedGptModel = urlParams.get('gm');
 
         if (sharedPrompt && sharedClaude && sharedGpt4) {
             promptInput.value = sharedPrompt;
@@ -174,6 +184,10 @@ document.addEventListener('DOMContentLoaded', function() {
             gpt4Output.textContent = atob(sharedGpt4);
             shareSection.classList.remove('d-none');
             shareLink.value = window.location.href;
+
+            // Set the model selections if they were shared
+            if (sharedClaudeModel) claudeModel.value = sharedClaudeModel;
+            if (sharedGptModel) gptModel.value = sharedGptModel;
         }
     });
 

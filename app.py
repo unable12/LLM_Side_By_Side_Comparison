@@ -30,13 +30,17 @@ def index():
 @app.route('/compare', methods=['POST'])
 def compare():
     try:
-        prompt = request.json.get('prompt')
+        data = request.json
+        prompt = data.get('prompt')
+        claude_model = data.get('claude_model', 'claude-3-sonnet')
+        gpt_model = data.get('gpt_model', 'gpt-4')
+
         if not prompt:
             return jsonify({'error': 'Prompt is required'}), 400
 
-        # Call both APIs
-        claude_response = call_claude_api(prompt)
-        gpt4_response = call_gpt4_api(prompt)
+        # Call both APIs with selected models
+        claude_response = call_claude_api(prompt, model=claude_model)
+        gpt4_response = call_gpt4_api(prompt, model=gpt_model)
 
         return jsonify({
             'claude_response': claude_response,
